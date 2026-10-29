@@ -78,7 +78,7 @@ function mulaiScannerKamera() {
     htmlQRScanner.render(ketikaScanSukses, ketikaScanGagal)
 }
 
-async function ketikaScanSukses() {
+async function ketikaScanSukses(decodedText) {
     trxIdSekarang = decodedText
 
     // Hentikan scanner kamera sementara
