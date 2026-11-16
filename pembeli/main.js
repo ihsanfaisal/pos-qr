@@ -116,7 +116,7 @@ async function ketikaScanSukses(decodedText) {
     }
 }
 
-async function ketikaScanGagal() {
+async function ketikaScanGagal(error) {
     // abaikan
 }
 
