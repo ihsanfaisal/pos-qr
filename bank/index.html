@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Bank Server - Top Up E-Wallet</title>
+    <link rel="stylesheet" href="bank.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🏦 Bank Server (Top Up)</h1>
+
+      <!-- Form Input Top Up -->
+      <div class="bank-card">
+        <h3>Transfer Top Up Saldo</h3>
+
+        <div class="input-group">
+          <label>ID Siswa / Rekening:</label>
+          <input type="text" id="target-user-id" value="SISWA-01" placeholder="Contoh: SISWA-01" />
+        </div>
+
+        <div class="input-group">
+          <label>Nominal Top Up (Rp):</label>
+          <input type="number" id="nominal-topup" value="20000" step="5000" min="5000" />
+        </div>
+
+        <button id="btn-topup" class="btn-bank" onclick="kirimTopUp()">⚡ Eksekusi Top Up</button>
+      </div>
+
+      <!-- Live Status Receiver -->
+      <div id="pesan-bank" class="pesan-bank"></div>
+
+      <!-- Riwayat Top Up Realtime -->
+      <div class="history-box">
+        <h3>Riwayat Transfer Bank</h3>
+        <ul id="list-history">
+          <li style="color: #888; font-size: 11px">Belum ada transaksi top up...</li>
+        </ul>
+      </div>
+    </div>
+
+    <script type="module" src="bank.js"></script>
+  </body>
+</html>
