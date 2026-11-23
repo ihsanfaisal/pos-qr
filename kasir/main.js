@@ -4,7 +4,8 @@ import {
     getFirestore,
     onSnapshot,
     doc,
-    setDoc
+    setDoc,
+    increment
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
 import QRCode from "https://esm.sh/qrcode@1.5.3"
 
@@ -26,6 +27,34 @@ const db = getFirestore(app)
 let totalHarga = 0
 let trxIdSekarang = ""
 let unsubscribeListener = null
+let saldoPenjual = 0
+
+// Fungsi memantau saldo penjual secara real-time dari firestore
+function listenSaldoPenjual() {
+    const refPenjual = doc(db, "penjual", "kasir")
+    onSnapshot(refPenjual, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+            saldoPenjual = docSnapshot.data().saldo || 0
+        } else {
+            saldoPenjual = 0
+        }
+        document.getElementById('saldo-penjual').innerText = `Rp. ${saldoPenjual}`
+    })
+}
+
+// Fungsi menambah saldo penjual di firestore
+async function tambahSaldoPenjual(nominal) {
+    const refPenjual = doc(db, "penjual", "kasir")
+    try {
+        await setDoc(refPenjual, {
+            saldo: increment(nominal)
+        }, { merge: true })
+    } catch (error) {
+        console.log("Gagal memperbarui saldo penjual")
+    }
+}
+
+listenSaldoPenjual()
 
 // Fungsi tambah item ke keranjang
 window.tambahKeKeranjang = function (nama, harga) {
@@ -104,6 +133,9 @@ function listenStatusPembayaran(trxId) {
                 document.getElementById('status-box').className = "status-box status-success"
                 document.getElementById('status-teks').innerText = "🎉 LUNAS"
                 document.getElementById('qr-canvas').style.opacity = "0.2"
+
+                // tambahkan total transaksi ke saldo penjual
+                tambahSaldoPenjual(docSnapshot.data().total || totalHarga)
 
                 unsubscribeListener()
             }
